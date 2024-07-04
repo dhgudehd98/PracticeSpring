@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>Login</h1>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/login}" method="get">
     <div>
         <label for="id">Username:</label>
         <input type="text" id="id" name="id"/>
@@ -17,6 +17,9 @@
     <div>
         <button type="submit">Login</button>
     </div>
+    <a th:href="@{/registerButton}">
+        <button type = "button">회원가입하기</button>
+    </a>
 </form>
 </body>
 </html>

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class MemberDto {
     private String id ;
     private String password;
 }

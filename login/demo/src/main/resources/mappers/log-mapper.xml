@@ -3,9 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.demo.login.dao.LoginMapper">
-    <select id="findByInformation" resultType="LoginDto">
+    <select id="findByInformation" resultType="MemberDto">
         SELECT *
         FROM Login
         WHERE id = #{id} AND password = #{password}
     </select>
+
+    <select id = "duplicateId" resultType = "MemberDto">
+        select *
+        from Login
+        where id = #{id}
+    </select>
+
+    <insert id = "registerMember">
+        insert into Login values(#{id},#{password})
+    </insert>
 </mapper>
