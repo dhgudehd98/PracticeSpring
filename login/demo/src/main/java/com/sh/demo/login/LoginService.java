@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 @Slf4j
@@ -21,6 +22,7 @@ import java.util.Optional;
 )
 public class LoginService {
     private final LoginMapper loginMapper;
+
 
     public MemberDto findByInformation(String id, String password) {
         return loginMapper.findByInformation(id, password);
@@ -36,6 +38,11 @@ public class LoginService {
 
     @Transactional
     public int registerMember(String id, String password) {
-       return loginMapper.registerMember(id, password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodingPassword = passwordEncoder.encode(password);
+        int memberid = 0;
+        MemberDto memberDto = new MemberDto(memberid, id, encodingPassword);
+        return loginMapper.register(memberDto);
+//        return loginMapper.registerMember(memberid,id, encodingPassword);
     }
 }

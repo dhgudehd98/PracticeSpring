@@ -40,6 +40,10 @@ dependencies {
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '6.3.0'
+
+
 }
 
 

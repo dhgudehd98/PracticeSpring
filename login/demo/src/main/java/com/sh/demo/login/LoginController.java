@@ -49,8 +49,10 @@ public class LoginController {
         return status;
     }
 
+
     @PostMapping("/registerMember")
     public String registerMember(@RequestParam String id, @RequestParam String password) {
+
         loginService.registerMember(id, password);
         return "redirect:/success";
     }

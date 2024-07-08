@@ -11,5 +11,7 @@ public interface LoginMapper {
 
     Optional<MemberDto> duplicateId(String id);
 
-    int registerMember(String id, String password);
+    int registerMember(int memberId,String id, String encodingPassword);
+
+    int register(MemberDto memberDto);
 }

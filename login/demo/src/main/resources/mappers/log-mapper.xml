@@ -3,10 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.demo.login.dao.LoginMapper">
-    <select id="findByInformation" resultType="MemberDto">
-        SELECT *
-        FROM Login
-        WHERE id = #{id} AND password = #{password}
+
+    <select id = "findByInformation" resultType="MemberDto">
+        select id, password
+        from Login
+        where id = #{id} and password = #{password}
     </select>
 
     <select id = "duplicateId" resultType = "MemberDto">
@@ -15,7 +16,14 @@
         where id = #{id}
     </select>
 
-    <insert id = "registerMember">
-        insert into Login values(#{id},#{password})
+    <insert id = "registerMember" useGeneratedKeys="true" keyProperty="memberId">
+        insert into Login values(0,#{id},#{encodingPassword})
     </insert>
+
+    <!-- LoginMapper.xml -->
+    <insert id="register" useGeneratedKeys="true" keyProperty="memberId">
+        INSERT INTO Login (id, password)
+        VALUES (#{id}, #{password})
+    </insert>
+
 </mapper>

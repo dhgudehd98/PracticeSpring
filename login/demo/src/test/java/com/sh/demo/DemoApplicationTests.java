@@ -51,12 +51,23 @@ class DemoApplicationTests {
     @DisplayName("아이디가 데이터베이스에 등록되어있는지 확인")
     void test3() {
         //given
+        int memberid = 0;
         String id = "dhgudehd";
         String password = "1234";
         //when
-        int result = loginMapper.registerMember(id, password);
+        MemberDto memberDto = new MemberDto(memberid, id, password);
+
+        int memberid2 = 0;
+        String id2 = "dhgudehd";
+        String password2 = "1234";
+        //when
+        MemberDto memberDto2 = new MemberDto(memberid2, id2, password2);
+        int result = loginMapper.register(memberDto);
+        int result2 = loginMapper.register(memberDto2);
+
+//        int result = loginMapper.registerMember(memberid,id, password);
         //then
-        Assertions.assertThat(result).isEqualTo(1);
+        Assertions.assertThat(result).isSameAs(result2);
     }
 
 }
