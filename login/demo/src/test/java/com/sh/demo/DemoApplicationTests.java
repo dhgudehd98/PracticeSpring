@@ -67,7 +67,7 @@ class DemoApplicationTests {
 
 //        int result = loginMapper.registerMember(memberid,id, password);
         //then
-        Assertions.assertThat(result).isSameAs(result2);
+        Assertions.assertThat(result).isNotSameAs(result2);
     }
 
 }

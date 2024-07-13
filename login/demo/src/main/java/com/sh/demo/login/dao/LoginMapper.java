@@ -13,5 +13,5 @@ public interface LoginMapper {
 
     int registerMember(int memberId,String id, String encodingPassword);
 
-    int register(MemberDto memberDto);
+    int register(MemberDto member);
 }

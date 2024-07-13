@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: LoginByController
+  datasource:
+    url: jdbc:mysql://localhost:3306/springdb
+    username: sh
+    password: sh
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  servlet:
+    context-path: /app
+logging:
+  level:
+    root: info
+    com.sh: debug
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.sh
+  mapper-locations: classpath*:mappers/**/*-mapper.xml
+
+ftp:
+  server:
+    host: ssg-java3.iptime.org
+    port: 21
+    username: myftp  # 팀별 아이디를 사용하세요.
+    password: myftp # 팀별 패스워드를 사용하세요.
+
+
+

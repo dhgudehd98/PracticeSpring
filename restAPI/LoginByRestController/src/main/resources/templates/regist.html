@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입폼</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        main {
+            flex: 1;
+            padding: 20px;
+            margin-top: 56px; /* to avoid overlap with fixed nav */
+        }
+        .photo-preview {
+            margin-top: 10px;
+            width: 200px;
+            height: 200px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ced4da;
+        }
+        .photo-preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Spring or Death</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">홈</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">게시판</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">기타</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<main class="container">
+    <h2>회원가입폼</h2>
+    <form action="@{/member}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="profileImage">프로필 사진</label>
+                <input type="file" id="profileImage" name="imageFile" class="form-control-file" onchange="previewImage(event)">
+                <div class="photo-preview" id="photoPreview">
+                    <span>사진 미리보기</span>
+                </div>
+            </div>
+            <label for="email">이메일</label>
+            <div class="input-group">
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="checkEmailBtn" onclick="checkId()">중복 체크</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">비밀번호 확인</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="비밀번호를 다시 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+        </div>
+
+        <button type="submit" class="btn btn-primary" onclick="registerMember(event)">제출</button>
+    </form>
+</main>
+<script>
+    var check = false;
+
+    function checkId() {
+        var email = $("#email").val();
+        console.log("버튼 입력됨")
+        $.ajax({
+            //요청 보내는쪽
+            url : '[[@{/member}]]',
+            method : 'get',
+            data : {
+                email:email
+            },
+            success: function(response) {
+                console.log(response);
+                // 정상처리
+                if (response.data) {
+                    alert("이미 사용중인 아이디입니다.");
+                    check = false;
+                } else {
+                    alert("사용 가능한 아이디입니다.");
+                    check = true;
+                }
+            },
+            error (response) {
+                // 오류발생시
+                console.log(response);
+            }
+        });
+    }
+
+    function previewImage(event) {
+        const preview = document.getElementById('photoPreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = '<img src="' + e.target.result + '" alt="프로필 사진">';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '<span>사진 미리보기</span>';
+        }
+    }
+
+
+    function registerMember(event) {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var name = document.getElementById('name').value;
+        if (!check) {
+            alert("이메일 중복 체크를 해주세요.");
+            event.preventDefault(); // 폼 제출을 막음
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
+            event.preventDefault();
+            return false;
+        }
+
+        if (name === "") {
+            alert("이름을 입력해주세요.");
+            event.preventDefault(); // 폼 제출을 막음
+            return false;
+        }
+
+        $.ajax({
+            url: '[[@{/member}]]',
+            method: 'post',
+            data: {
+                email:email ,
+                password:password ,
+                name:name
+            },
+            success(restResponse) {
+                console.log(restResponse.data)
+                if (restResponse.data) {
+                    alert('회원가입이 성공적으로 진행되었습니다.');
+                    window.location.href = redirectUrl;
+                }else{
+                    alert('회원가입에 실패했습니다, ')
+                }
+            },
+            error(restResponse) {
+                console.log('오류가 출력되었습니다')
+            }
+        })
+        return true;
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

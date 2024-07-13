@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.loginbyrestcontroller.dao.MemberMapper">
+
+    <resultMap id="MemberResultMap" type="com.sh.loginbyrestcontroller.dto.Member">
+        <id property="id" column="member_id"/>
+        <result property="email" column="member_email"/>
+        <result property="password" column="member_password"/>
+        <result property="name" column="member_name"/>
+        <result property="createdAt" column="registration_date"/>
+    </resultMap>
+    <select id="duplicateId" resultMap="MemberResultMap">
+        select *
+        from Member
+        where member_email = #{email}
+    </select>
+
+    <insert id="registMember">
+        insert into Member
+        values (#{id}, #{email}, #{password}, #{name}, #{createdAt})
+    </insert>
+
+    <select id="findById">
+        select * from
+    </select>
+</mapper>
