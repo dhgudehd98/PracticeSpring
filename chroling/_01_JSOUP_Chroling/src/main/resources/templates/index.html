@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script>
+        // Fetch image URLs from the backend
+        async function loadImages() {
+            try {
+                const response = await fetch('/app');
+                const imgSrcList = await response.json();
+
+                const container = document.getElementById('image-container');
+                container.innerHTML = ''; // Clear existing content
+
+                imgSrcList.forEach(src => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = src;
+                    imgElement.style.width = '200px'; // Set the width as needed
+                    imgElement.style.margin = '10px'; // Add margin for spacing
+                    container.appendChild(imgElement);
+                });
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
+
+        // Load images when the page loads
+        window.onload = loadImages;
+    </script>
+</head>
+<body>
+<h1>안녕하세요 index페이지입니다.</h1>
+<div id="image-container"></div>
+</body>
+</html>

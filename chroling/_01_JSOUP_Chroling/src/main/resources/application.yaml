@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: chrolingWithJPA
+
+server:
+  servlet:
+    context-path: /app
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/chrolingdb
+    username: sh
+    password: sh
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    properties:
+      hibernate:
+        hdm2ddl:
+          auto:create
+        format_sql: true

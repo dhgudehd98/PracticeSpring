@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: _03_spring_batch
+  batch:
+    job:
+      enabled: false # 앱시작시 job 실행 여부 (기본값 true)
+      # spring.batch.job.name job빈이 여러개인 경우 앱시작시 구동할 job name 명시
+#      name: simpleJob
+#      name: multipleJobStep
+#      name: chunkBasedJob
+    jdbc:
+      initialize-schema: always # 메타테이블이 존재하지 않는 경우만 생성(springdb.batch_xxx 테이블)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/springdb
+    username: sh
+    password: sh
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          auto: validate

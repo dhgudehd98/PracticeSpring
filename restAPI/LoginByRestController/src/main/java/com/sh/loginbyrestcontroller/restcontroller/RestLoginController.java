@@ -25,7 +25,7 @@ public class RestLoginController {
 
     // id 조회
     @GetMapping("/member")
-    public ResponseEntity<RestResponse<Object>> restLogin(@RequestParam String email) {
+    public ResponseEntity<RestResponse<Object>> duplicateId(@RequestParam String email) {
         Optional<Member> member = memberService.duplicateId(email);
         Member member2 = member.orElse(null);
         log.debug("membere : {}", member2);

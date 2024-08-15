@@ -4,7 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LoginByRestController.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LoginByRestController.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PracticeSpring.iml" filepath="$PROJECT_DIR$/.idea/PracticeSpring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/_01_JSOUP_Chroling.main.iml" filepath="$PROJECT_DIR$/.idea/modules/_01_JSOUP_Chroling.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/_NCP_Server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/_NCP_Server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/chrolingWithJPA.main.iml" filepath="$PROJECT_DIR$/.idea/modules/chrolingWithJPA.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/demo.main.iml" filepath="$PROJECT_DIR$/.idea/modules/demo.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/up-down.main.iml" filepath="$PROJECT_DIR$/.idea/modules/up-down.main.iml" />
     </modules>
   </component>
 </project>

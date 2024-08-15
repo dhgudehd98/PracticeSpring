@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: _NCP_Server
+server:
+  servlet:
+    context-path: /app
+logging:
+  level:
+
+    root: info
+    com.sh._ncp_server: DEBUG

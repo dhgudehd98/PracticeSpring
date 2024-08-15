@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: _01_JSOUP_Chroling
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/chrolingdb
+    username: sh
+    password: sh
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        hdm2ddl:
+          auto: create
+        format_sql: true
+        naming:
+
+
+
+server:
+  servlet:
+    context-path: /app
+
+

@@ -4,6 +4,30 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Ncp/_NCP_Server" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Ncp/_NCP_Server" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/SpringChroling/chrolingWithJPA" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/SpringChroling/chrolingWithJPA" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/chroling/_01_JSOUP_Chroling" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/chroling/_01_JSOUP_Chroling" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/login/demo" />
         <option name="modules">
           <set>
@@ -16,6 +40,30 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/restAPI/LoginByRestController" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/springbatch/_03_spring_batch" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/springbatch/_03_spring_batch" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/springbatch/spring_batch" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/springbatch/spring_batch" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/up-down" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/up-down" />
           </set>
         </option>
       </GradleProjectSettings>
