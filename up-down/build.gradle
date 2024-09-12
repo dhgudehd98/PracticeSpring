@@ -29,10 +29,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    //elasticSearch
+    implementation 'org.springframework.data:spring-data-elasticsearch:5.3.2'
     //jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.17.2'
 

@@ -5,6 +5,7 @@ import com.sh.updown.data.NaverList;
 import com.sh.updown.dto.ProductDto;
 
 
+import com.sh.updown.entity.Destination;
 import com.sh.updown.entity.ProductInformation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,10 @@ public class Naver {
   public List<ProductDto> naverChroling() throws IOException {
       NaverList naverList = new NaverList();
 
+      //Enum 값을 가져오기 위해서 설정
+      Destination[] destinations = Destination.values();
+      //제주 , 강원, 전라, 부산, 거제, 남해, 통영, 경주, 여수, 울릉도
+
       //네이버 url 리스트 정보들 가져오기
       List<String> urlList = naverList.list();
       //반환 해야되는 리스트
@@ -35,6 +40,8 @@ public class Naver {
 
       for(int i = 0; i<urlList.size(); i++) {
           Document doc = Jsoup.connect(urlList.get(i)).get();
+          Destination destination = destinations[i % destinations.length];
+
           // 데이터 추출
           Elements items = doc.select("li.item.DomesticProduct");
           for (Element item : items) {
@@ -68,7 +75,7 @@ public class Naver {
                       .thumbnailUrl(thumbnailUrl) // 이미지 링크
                       .detailUrl(detailUrl)
                       .travelAgency(sellerSrc)
-                      .area(area) // 상세 링크
+                      .destination(destination)
                       .build();
 
               ProductDto naverTour = ProductDto.builder()

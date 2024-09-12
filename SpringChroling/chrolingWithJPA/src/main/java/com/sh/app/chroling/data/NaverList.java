@@ -8,19 +8,14 @@ import java.util.List;
 public class NaverList {
     List<String> naverList = new ArrayList<>();
     LocalDate now = LocalDate.now();
-    LocalDate start = now.plusWeeks(1);
-    LocalDate end = start.plusWeeks(1);
+    LocalDate start = now.plusDays(1);
+    LocalDate end = start.plusDays(1);
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
     public List<String> list() {
-
-        for(int page = 1; page<4; page++) {
+        //제주 , 강원, 전라, 부산, 거제, 남해, 통영, 경주, 여수, 울릉도
+        for(int page = 1; page<3; page++) {
             String naverJeju = "https://pkgtour.naver.com/domestic-list?destination=14&departureDate="
-                    + start.format(dateFormatter)
-                    + "%2C"
-                    + end.format(dateFormatter)
-                    + "&page=" + page;
-            String naverUlleungdo = "https://pkgtour.naver.com/domestic-list?destination=11491925&departureDate="
                     + start.format(dateFormatter)
                     + "%2C"
                     + end.format(dateFormatter)
@@ -65,6 +60,12 @@ public class NaverList {
                     + "%2C"
                     + end.format(dateFormatter)
                     + "&page=" + page;
+            String naverUlleungdo = "https://pkgtour.naver.com/domestic-list?destination=11491925&departureDate="
+                    + start.format(dateFormatter)
+                    + "%2C"
+                    + end.format(dateFormatter)
+                    + "&page=" + page;
+
             naverList.add(naverJeju);
             naverList.add(naverUlleungdo);
             naverList.add(naverGangwondo);

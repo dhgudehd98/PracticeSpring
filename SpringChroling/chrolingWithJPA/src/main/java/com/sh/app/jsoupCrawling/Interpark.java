@@ -1,12 +1,19 @@
-package com.sh.updown.chroling;
+package com.sh.app.jsoupCrawling;
 
 
 
-import com.sh.updown.data.InterparkList;
-import com.sh.updown.dto.ProductDto;
-import com.sh.updown.entity.Destination;
-import com.sh.updown.entity.ProductInformation;
+
+
+
+import com.sh.app.chroling.data.InterparkList;
+import com.sh.app.chroling.dto.ProductDto;
+import com.sh.app.chroling.entity.Destination;
+import com.sh.app.chroling.entity.Product;
+import com.sh.app.chroling.entity.ProductInformation;
+import com.sh.app.chroling.repository.DataRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.core5.reactor.Command;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,44 +27,66 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Component
+@Slf4j
 @RequiredArgsConstructor
-public class Interpark {
+public class Interpark implements CommandLineRunner {
 
     //InterPark url을 가지고 있는 객체 선언
     InterparkList list = new InterparkList();
     // interpark url을 가지고 있는 list 설정
     List<String> url = list.list();
 
+    private final DataRepository dataRepository;
     List<ProductDto> interparkList = new ArrayList<>();
-    public List<ProductDto> interparkChroling() throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
         //ChromeDriver 옵션 설정 및 연결
+        //로컬 환경에서의 Chromedriver 실행
         System.setProperty("webdriver.chrome.driver", "/opt/homebrew/bin/chromedriver");
+
+        //서버에서 chromedriver 구축
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless"); // 브라우저 UI를 표시하지 않음 (headless 모드)
+//        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+//        options.setBinary("/usr/bin/google-chrome");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox"); // 추가한 옵션
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu"); //추가한 옵션
+        options.addArguments("--ignore-ssl-errors=yes");
+        options.addArguments("--ignore-certificate-errors");
+        options.addArguments("--remote-allow-origins=*"); // 원격 연결 허용
+
         WebDriver driver = new ChromeDriver(options);
 
         Destination[] destinations = Destination.values();
         try {
             for (int i = 0; i < url.size(); i++) {
+
+                for (String urlString : url) {
+                    System.out.println("URL: " + urlString);
+                }
+
                 driver.get(url.get(i));
                 Destination destination = destinations[i];
 
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
                 WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.itemInfo > div.itemInfoTop > div.itemInfoMain > div.title")));
 
-                String site = "인터파크";
                 // 상품 요소 선택
                 List<WebElement> items = driver.findElements(By.cssSelector("div.resultContent > ul.tourCompSearchList > li"));
 
                 for (WebElement item : items) {
                     try {
 
+                        String site = "인터파크";
                         // 상세 링크
                         WebElement linkElement = item.findElement(By.cssSelector("a"));
                         String detailLink = linkElement.getAttribute("href");
@@ -67,7 +96,6 @@ public class Interpark {
                         String imageUrl = imageElement.getAttribute("src");
 
                         // 제목
-
                         WebElement titleElement = item.findElement(By.cssSelector("div.itemInfo > div.itemInfoTop > div.itemInfoMain > div.title"));
                         String title = titleElement.getText().trim();
 
@@ -79,42 +107,75 @@ public class Interpark {
                         WebElement placeElement = item.findElement(By.cssSelector("div.itemInfoMain > div.place"));
                         List<WebElement> placeSpans = placeElement.findElements(By.tagName("span"));
 
-                        String duration = "";
+                        // 시작 날짜
+                        LocalDate startDate = null;
+                        try {
+                            // URL 패턴에서 날짜 추출하기
+                            // https://travel.interpark.com/tour/goods?goodsCd=24090430684
+                            String[] urlSplit = detailLink.split("goodsCd="); // "goodsCd="를 기준으로 URL을 분할
+                            if (urlSplit.length > 1) {
+                                String dateData = urlSplit[1]; // "goodsCd=" 뒤의 값을 추출
+                                if (dateData.length() >= 6) {
+                                    // dateData 에서 날짜로 사용될 수 있는 6자리 추출 (예: 240904)
+                                    String potentialDate = dateData.substring(0, 6);
+                                    // 날짜 형식 유효성 검사 (예: "20230826" 형태로 변환)
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+                                    try {
+                                        startDate = LocalDate.parse(potentialDate, formatter); // LocalDate로 변환
+                                    } catch (DateTimeParseException e) {
+                                        // 만약 parsing에 실패하면 null로 유지
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
+                        String duration = "";
+                        int nights;
                         if (placeSpans.size() > 0) {
                             duration = placeSpans.get(0).getText().trim();
+                            nights = Integer.parseInt(duration.charAt(0) + "");
                         } else {
-                            System.out.println("기간 정보가 없습니다.");
+                           nights = 0;
                         }
 
                         ProductInformation travelInformation = ProductInformation.builder()
                                 .title(title) // 여행 제목
-                                .nights(duration) // 몇박 몇일
+                                .nights(nights) // 몇박 몇일
+                                .startDate(startDate) // 시작 날짜
                                 .price(price) // 가격
                                 .thumbnailUrl(imageUrl) //여행지 이미지
+                                .travelAgency(site)
                                 .detailUrl(detailLink) // 상품 상세페이지
                                 .destination(destination)
                                 .build();
                         //인터파크에는 시작 날짜랑 여행일 존재하지 않음 -> 몇박 몇일인지만 존재
-                        ProductDto chrolingData = ProductDto.builder()
+                        Product chrolingData = Product.builder()
                                 .sourceSite(site)
-                                .productInformationDto(travelInformation)
+                                .productInformation(travelInformation)
                                 .build();
+                        dataRepository.save(chrolingData);
 
-                        interparkList.add(chrolingData);
+
                     } catch (Exception e) {
                         // 오류가 발생하면 출력
                         e.printStackTrace();
                     }
                 }
             }
-            } catch(Exception e){
-                e.printStackTrace();
-            } finally{
-                // 브라우저 종료
-                driver.quit();
-            }
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally{
+            // 브라우저 종료
+            driver.quit();
+        }
 
-        return interparkList;
     }
+
+
+
+
+
 }

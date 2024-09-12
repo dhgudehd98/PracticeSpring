@@ -1,34 +1,34 @@
 spring:
+  profiles:
+    default: test
   application:
-    name: up-down
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost/chrolingdb
-    username: sh
-    password: sh
+    name: up-data
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://223.130.155.16/traveldb
+#    username: upProject
+#    password: upProject_password1@
   batch:
     job:
-      enabled: false
-      #      JobLauncher 자동 실행 false 설정
-      #      names: ${job.name:NONE}
-      # job.name : NONE 여기에서 NONE은 Job의 이름이고 , Job의 이름을 직접 설정할 수 있다. 하지만 해당 Job이 존재하지 않을 경우에는 NONE이라는 Job이 실행되지만, NONE이라는 Job이 존재하지 않으므로 아무 코드도 실행되지 않는다.
+      enabled: true
     jdbc:
       initialize-schema: always
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: create  # 테이블을 새로 생성하거나 기존 테이블을 삭제하고 새로 생성합니다.
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-        naming:
+
+logging:
+  level:
+    root: info
+    com.sh.updown: debug
 
 server:
   servlet:
     context-path: /app
 
-logging:
-  level:
-    root: INFO
-    com.sh.updown: DEBUG
-
+app:
+  version: 0.0.1
